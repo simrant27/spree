@@ -1,5 +1,3 @@
-// cucumber.conf.js file
-
 const { Before, BeforeAll, AfterAll, After, setDefaultTimeout } = require("@cucumber/cucumber");
 const { chromium } = require("playwright");
 

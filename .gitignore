@@ -37,3 +37,4 @@
 # Ignore node_modulues
 /node_modules
 /.idea
+/package-lock.json

@@ -1,14 +1,15 @@
-Feature: Login
+Feature: login
     As an admin
-    I want to login to the application
-    So that I can access to the home page
+    I want to login to the admin panel
+    So that I can manage my products
 
-Scenario: Login with valid credential
+Background:
     Given the admin has navigated to the login page
-    When the admin login with email "admin@admin.com" and password "admin123456"
+
+Scenario: login with valid credentials
+    When the admin logs in with email "admin@admin.com" and password "admin123456"
     Then the admin should be navigated to the home page
 
-Scenario: Login with invalid credential
-    Given the admin has navigated to the login page
-    When the admin login with email "admin1@admin.com" and password "123456"
-    Then the "Invalid credentials" message should be pop in the login page
+Scenario: login with invalid credentials
+    When the admin logs in with email "admin1@admin.com" and password "123456"
+    Then error message "Invalid credentials" should be shown
