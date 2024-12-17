@@ -1,21 +1,17 @@
 const { Given, When, Then } = require("@cucumber/cucumber");
 const { expect } = require("@playwright/test");
+const { LoginPage } = require("../pageObjects/LoginPage");
 
-const loginBtnLocator = "input[value='Login']";
-const emailFieldLocator = "#spree_user_email";
-const passwordFieldLocator = "#spree_user_password";
-const alertLocator = "div.alert-danger"
+const loginPage = new LoginPage;
 
 Given('user {string} has navigated to the admin login page', async function (user) {
-   await page.goto("http://localhost:3000/admin/login");
-   await expect(page.url()).toBe("http://localhost:3000/admin/login");
+    await loginPage.navigateToAdminLoginPage();
+    await expect(page.url()).toBe("http://localhost:3000/admin/login");
 });
 
 When('user {string} logs in with following credentials', async function (user, credentials) {
     credentials = credentials.hashes();
-    await page.locator(emailFieldLocator).fill(credentials[0].email);
-    await page.fill(passwordFieldLocator, credentials[0].password);
-    await  page.locator(loginBtnLocator).click();
+    await loginPage.login(credentials[0].email, credentials[0].password);
 });
 
 Then('user {string} should be navigated to the admin panel dashboard', async function (user) {
@@ -25,13 +21,11 @@ Then('user {string} should be navigated to the admin panel dashboard', async fun
 When('user {string} tries to log in with following credentials', async function (user, credentials) {
     credentials = credentials.hashes();
     for(let credential of credentials){
-        await page.locator(emailFieldLocator).fill(credential.email);
-        await page.locator(passwordFieldLocator).fill(credential.password);
-        await page.locator(loginBtnLocator).click();
+        await loginPage.login(credential.email, credential.password);
     }
 });
 
-Then('error message {string} should be shown', async  function (errorMessage) {
-    const errmsg = await page.locator(alertLocator).textContent();
-    await expect(errmsg).toEqual(errorMessage)
+Then('error message {string} should be shown', async function (errorMessage) {
+    const errMessage = await page.locator(loginPage.errorMessageSelector).textContent();
+    await expect(errMessage).toEqual(errorMessage);
 });
