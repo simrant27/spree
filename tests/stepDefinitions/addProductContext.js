@@ -1,5 +1,7 @@
 const { Given, When, Then } = require("@cucumber/cucumber")
 const { expect } = require("@playwright/test");
+const util = require('util');
+
 const { LoginPage } = require("../pageObjects/LoginPage");
 const { AddProduct } = require("../pageObjects/AddProduct");
 
@@ -18,12 +20,14 @@ When('user {string} adds a new product with following data:', async function (us
     await addProduct.navigateToNewProductPage();
     data = data.hashes();
     for(let item of data){
-        await addProduct.addNewProduct(item.name, item.sku, item.masterPrice, item.shippingCategories) ;
+        await addProduct.addNewProduct(item.name, item.sku, item.prototype, item.masterPrice) ;
     }
   });
 
-Then('the product {string} should be listed in the list of products', async function (name) {
-    await page.locator(this.menuItenProductSelector).click();
+Then('the product {string} should be listed in the list of Products',async function (name) {
+    await page.locator(addProduct.menuItenProductSelector).click();
+    const productSelector = util.format(addProduct.productSelector,name);
+    await expect(page.locator(productSelector)).toHaveText(name);
   });
 
 
