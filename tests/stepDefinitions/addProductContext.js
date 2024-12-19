@@ -8,7 +8,7 @@ const { AddProduct } = require("../pageObjects/AddProduct");
 const loginPage = new LoginPage();
 const addProduct = new AddProduct();
 
-Given('user {string} has logged in to the admin panel using following credentials:',async function (user, credentials) {
+Given('user {string} has logged in to the admin panel using following credentials:', async function (user, credentials) {
     // Write code here that turns the phrase above into concrete actions
     await loginPage.navigateToAdminLoginPage();
     credentials = credentials.hashes();
@@ -24,10 +24,8 @@ When('user {string} adds a new product with following data:', async function (us
     }
   });
 
-Then('the product {string} should be listed in the list of Products',async function (name) {
-    await page.locator(addProduct.menuItenProductSelector).click();
+Then('the product {string} should be listed in the list of products', async function (name) {
+    await page.locator(addProduct.menuItemProductSelector).click();
     const productSelector = util.format(addProduct.productSelector,name);
     await expect(page.locator(productSelector)).toHaveText(name);
   });
-
-
