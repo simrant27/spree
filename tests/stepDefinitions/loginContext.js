@@ -15,7 +15,7 @@ When('user {string} logs in with following credentials', async function (user, c
 });
 
 Then('user {string} should be navigated to the admin panel dashboard', async function (user) {
-    await expect(page.url()).toBe("http://localhost:3000/");
+    await page.waitForURL("http://localhost:3000/", { timeout: 5000 });
 });
 
 When('user {string} tries to log in with following credentials', async function (user, credentials) {
