@@ -12,7 +12,7 @@ Given('user {string} has logged in to the admin panel using following credential
     await loginPage.navigateToAdminLoginPage();
     credentials = credentials.hashes();
     await loginPage.login(credentials[0].email, credentials[0].password);
-    await expect(page.url()).toBe("http://localhost:3000/");
+    await page.waitForURL("http://localhost:3000/", { timeout: 5000 });
   });
 
 When('user {string} adds a new product with following details:', async function (user, productData) {
